@@ -683,7 +683,7 @@ h1 {
 
 /* 隐藏类 */
 .hidden {
-    display: none !important;
+    display: none;
 }
 
 /* 响应式设计 */

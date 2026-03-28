@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .test-image {
+            max-width: 100%;
+            border: 2px solid #ddd;
+            margin: 20px 0;
+        }
+        .log {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e8f5e9;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>包装食物识别测试</h1>
+    <p>测试图片：卫龙大面筋（辣条）</p>
+    
+    <img id="test-image" class="test-image" alt="测试图片">
+    
+    <div>
+        <button id="test-btn">开始识别测试</button>
+    </div>
+    
+    <h3>调试日志：</h3>
+    <div id="log" class="log"></div>
+    
+    <h3>识别结果：</h3>
+    <div id="result" class="result">等待测试...</div>
+
+    <script src="js/api.js"></script>
+    <script>
+        // 日志输出函数
+        function log(message) {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            logDiv.textContent += `[${timestamp}] ${message}\n`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(message);
+        }
+        
+        // 加载图片
+        async function loadImage() {
+            try {
+                log('开始加载图片...');
+                
+                // 使用fetch读取本地图片
+                const response = await fetch('/test-image-data');
+                if (!response.ok) {
+                    throw new Error(`无法加载图片: ${response.status}`);
+                }
+                
+                const blob = await response.blob();
+                log(`图片加载成功，大小: ${blob.size} bytes`);
+                
+                // 转换为base64
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imageData = e.target.result;
+                    document.getElementById('test-image').src = imageData;
+                    log(`图片转换为base64，长度: ${imageData.length}`);
+                    
+                    // 存储图片数据供测试使用
+                    window.testImageData = imageData;
+                };
+                reader.readAsDataURL(blob);
+                
+            } catch (error) {
+                log(`加载图片失败: ${error.message}`);
+            }
+        }
+        
+        // 测试识别
+        async function testRecognition() {
+            const resultDiv = document.getElementById('result');
+            
+            if (!window.testImageData) {
+                log('错误：图片数据未加载');
+                resultDiv.textContent = '错误：图片数据未加载';
+                return;
+            }
+            
+            log('开始识别测试...');
+            resultDiv.textContent = '识别中...';
+            
+            try {
+                // 调用API
+                log('调用API...');
+                const response = await callQwenAPI(window.testImageData);
+                log('API调用成功');
+                
+                // 解析响应
+                log('解析响应...');
+                const analysisData = parseQwenResponse(response);
+                log('响应解析完成');
+                
+                // 显示结果
+                resultDiv.innerHTML = `
+                    <h4>识别结果：</h4>
+                    <p><strong>食品名称：</strong>${analysisData.name}</p>
+                    <p><strong>健康评分：</strong>${analysisData.score}分 (${analysisData.scoreLabel})</p>
+                    <p><strong>营养成分：</strong></p>
+                    <ul>
+                        <li>热量：${analysisData.nutrition.calories} kcal</li>
+                        <li>蛋白质：${analysisData.nutrition.protein} g</li>
+                        <li>脂肪：${analysisData.nutrition.fat} g</li>
+                        <li>碳水化合物：${analysisData.nutrition.carbs} g</li>
+                        <li>纤维素：${analysisData.nutrition.fiber} g</li>
+                    </ul>
+                    <p><strong>配料表：</strong>${analysisData.ingredients.join(', ')}</p>
+                    <p><strong>建议：</strong>${analysisData.advice}</p>
+                `;
+                
+                log('识别完成！');
+                
+            } catch (error) {
+                log(`识别失败: ${error.message}`);
+                resultDiv.textContent = `识别失败: ${error.message}`;
+                console.error('识别错误:', error);
+            }
+        }
+        
+        // 绑定事件
+        document.getElementById('test-btn').addEventListener('click', testRecognition);
+        
+        // 页面加载完成后加载图片
+        window.addEventListener('DOMContentLoaded', loadImage);
+    </script>
+</body>
+</html>

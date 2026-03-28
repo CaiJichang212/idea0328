@@ -19,10 +19,23 @@ function generateImageHash(imageData) {
 // 优化图片大小
 function optimizeImage(imageData) {
     return new Promise((resolve) => {
+        console.log('开始优化图片...');
+        console.log('原始图片数据长度:', imageData.length);
+        
+        // 检查图片数据是否有效
+        if (!imageData || typeof imageData !== 'string' || !imageData.startsWith('data:image/')) {
+            console.error('无效的图片数据');
+            resolve(imageData);
+            return;
+        }
+        
         const img = new Image();
         img.onload = function() {
+            console.log('图片加载成功，尺寸:', img.width, 'x', img.height);
+            
             // 快速检查图片大小，如果已经很小则直接返回
             if (imageData.length < 500000) { // 小于500KB
+                console.log('图片大小合适，直接返回');
                 resolve(imageData);
                 return;
             }
@@ -42,6 +55,8 @@ function optimizeImage(imageData) {
                 width = Math.round((width * maxHeight) / height);
                 height = maxHeight;
             }
+            
+            console.log('优化后图片尺寸:', width, 'x', height);
             
             // 创建canvas并绘制
             const canvas = document.createElement('canvas');
@@ -63,8 +78,11 @@ function optimizeImage(imageData) {
                 quality = 0.6;
             }
             
+            console.log('使用质量参数:', quality);
+            
             // 转换为base64
             const optimizedData = canvas.toDataURL('image/jpeg', quality);
+            console.log('优化后图片数据长度:', optimizedData.length);
             
             // 清理资源
             img.src = '';
@@ -72,6 +90,7 @@ function optimizeImage(imageData) {
             resolve(optimizedData);
         };
         img.onerror = function() {
+            console.error('图片加载失败');
             // 图片加载失败时，返回原始数据
             resolve(imageData);
         };
@@ -99,6 +118,8 @@ async function callQwenAPI(imageData) {
                 return cached.data;
             }
             
+            console.log('开始API调用...');
+            
             const response = await fetch('https://api-inference.modelscope.cn/v1/chat/completions', {
                 method: 'POST',
                 headers: {
@@ -123,11 +144,16 @@ async function callQwenAPI(imageData) {
                 })
             });
 
+            console.log('API响应状态:', response.status);
+            
             if (!response.ok) {
-                throw new Error(`API调用失败: ${response.status}`);
+                const errorText = await response.text();
+                console.error('API错误详情:', errorText);
+                throw new Error(`API调用失败: ${response.status} - ${errorText}`);
             }
 
             const data = await response.json();
+            console.log('API响应数据:', data);
             
             // 缓存结果
             imageCache.set(cacheKey, {
@@ -154,21 +180,40 @@ async function callQwenAPI(imageData) {
 // 解析模型返回的结果
 function parseQwenResponse(response) {
     try {
+        console.log('开始解析API响应...');
+        console.log('响应数据:', response);
+        
         // 检查响应结构
         if (!response.choices || !response.choices[0] || !response.choices[0].message || !response.choices[0].message.content) {
             throw new Error('响应结构不正确');
         }
 
         const content = response.choices[0].message.content;
+        console.log('响应内容:', content);
+        
+        // 移除Markdown代码块标记（如果存在）
+        let cleanedContent = content;
+        
+        // 移除 ```json 和 ``` 标记
+        if (content.includes('```json')) {
+            cleanedContent = content.replace(/```json\s*/, '').replace(/\s*```\s*$/, '');
+        } else if (content.includes('```')) {
+            cleanedContent = content.replace(/```\s*/, '').replace(/\s*```\s*$/, '');
+        }
+        
+        console.log('清理后的内容:', cleanedContent);
         
         // 提取JSON部分
-        const jsonMatch = content.match(/\{[\s\S]*\}/);
+        const jsonMatch = cleanedContent.match(/\{[\s\S]*\}/);
         if (!jsonMatch) {
             throw new Error('无法提取JSON数据');
         }
 
         const jsonString = jsonMatch[0];
+        console.log('提取的JSON字符串:', jsonString);
+        
         const parsedData = JSON.parse(jsonString);
+        console.log('解析后的JSON数据:', parsedData);
 
         // 计算健康评分等级
         let scoreLabel, scoreClass;
@@ -187,7 +232,7 @@ function parseQwenResponse(response) {
         }
 
         // 构建返回对象
-        return {
+        const result = {
             name: parsedData.name || '未知食品',
             score: parsedData.score || 0,
             scoreLabel: scoreLabel,
@@ -204,9 +249,14 @@ function parseQwenResponse(response) {
             alternatives: parsedData.alternatives || [],
             date: new Date().toLocaleString()
         };
+        
+        console.log('解析结果:', result);
+        return result;
     } catch (error) {
         console.error('解析响应错误:', error);
         // 返回默认数据，确保应用不会崩溃
-        return generateMockData();
+        const mockData = generateMockData();
+        console.log('使用模拟数据:', mockData);
+        return mockData;
     }
 }

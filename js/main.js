@@ -15,7 +15,9 @@ function initNavigation() {
             // 更新页面状态
             pages.forEach(page => {
                 page.classList.remove('active');
+                page.classList.add('hidden');
                 if (page.id === targetId) {
+                    page.classList.remove('hidden');
                     page.classList.add('active');
                 }
             });
@@ -424,156 +426,178 @@ function generateMockData() {
 
 // 显示分析结果
 function displayAnalysisResult(data) {
-    // 批量更新DOM，减少重排和重绘
-    document.querySelectorAll('.nav-link')[1].click();
+    // 首先切换到结果页
+    const navLinks = document.querySelectorAll('.nav-link');
+    const pages = document.querySelectorAll('.page');
     
-    // 使用DocumentFragment优化DOM操作
-    const fragment = document.createDocumentFragment();
+    // 更新导航链接状态
+    navLinks.forEach(l => l.classList.remove('active'));
+    navLinks[1].classList.add('active');
     
-    // 更新健康评分
-    const scoreCircle = document.getElementById('score-circle');
-    const scoreValue = document.getElementById('score-value');
-    const scoreLabel = document.getElementById('score-label');
-
-    // 一次性更新健康评分
-    scoreCircle.className = 'score-circle ' + data.scoreClass;
-    scoreValue.textContent = data.score;
-    scoreLabel.textContent = data.scoreLabel;
-
-    // 更新营养成分
-    const nutritionGrid = document.getElementById('nutrition-grid');
-    
-    // 清空营养成分网格
-    while (nutritionGrid.firstChild) {
-        nutritionGrid.removeChild(nutritionGrid.firstChild);
-    }
-
-    // 确保营养数据存在且格式正确
-    const nutrition = data.nutrition || {};
-    const nutritionItems = [
-        { label: '热量', value: (nutrition.calories || 0) + ' kcal' },
-        { label: '蛋白质', value: (nutrition.protein || 0) + ' g' },
-        { label: '脂肪', value: (nutrition.fat || 0) + ' g' },
-        { label: '碳水化合物', value: (nutrition.carbs || 0) + ' g' },
-        { label: '纤维素', value: (nutrition.fiber || 0) + ' g' }
-    ];
-
-    // 创建营养成分项并添加到fragment
-    nutritionItems.forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'nutrition-item';
-        
-        const valueDiv = document.createElement('div');
-        valueDiv.className = 'value';
-        valueDiv.textContent = item.value;
-        
-        const labelDiv = document.createElement('div');
-        labelDiv.className = 'label';
-        labelDiv.textContent = item.label;
-        
-        div.appendChild(valueDiv);
-        div.appendChild(labelDiv);
-        fragment.appendChild(div);
+    // 更新页面状态 - 显示结果页，隐藏其他页
+    pages.forEach(page => {
+        page.classList.remove('active');
+        page.classList.add('hidden');
     });
     
-    // 一次性添加所有营养成分项
-    nutritionGrid.appendChild(fragment);
-
-    // 更新配料表
-    const ingredientsList = document.getElementById('ingredients-list');
-    
-    // 清空配料表
-    while (ingredientsList.firstChild) {
-        ingredientsList.removeChild(ingredientsList.firstChild);
+    const resultPage = document.getElementById('result');
+    if (resultPage) {
+        resultPage.classList.remove('hidden');
+        resultPage.classList.add('active');
     }
-
-    const ingredients = data.ingredients || [];
-    const ingredientsFragment = document.createDocumentFragment();
     
-    // 创建配料项并添加到fragment
-    ingredients.forEach(ingredient => {
-        const div = document.createElement('div');
-        div.className = 'ingredient-item';
-        div.textContent = ingredient;
-        ingredientsFragment.appendChild(div);
-    });
-    
-    // 一次性添加所有配料项
-    ingredientsList.appendChild(ingredientsFragment);
+    // 延迟更新DOM，确保页面已完全切换
+    setTimeout(() => {
+        try {
+            // 更新健康评分
+            const scoreCircle = document.getElementById('score-circle');
+            const scoreValue = document.getElementById('score-value');
+            const scoreLabel = document.getElementById('score-label');
 
-    // 计算餐前决策建议
-    const calories = parseInt(nutrition.calories || 0);
-    const protein = parseFloat(nutrition.protein || 0);
-    const fat = parseFloat(nutrition.fat || 0);
-    const carbs = parseFloat(nutrition.carbs || 0);
-    const fiber = parseFloat(nutrition.fiber || 0);
-    
-    // 基于营养成分计算决策建议
-    let decisionAdvice = '';
-    if (data.score >= 8 && calories < 300 && fat < 10) {
-        decisionAdvice = '建议食用';
-    } else if (data.score >= 6 && calories < 400 && fat < 15) {
-        decisionAdvice = '适量食用';
-    } else {
-        decisionAdvice = '避免食用';
-    }
+            if (scoreCircle && scoreValue && scoreLabel) {
+                // 一次性更新健康评分
+                scoreCircle.className = 'score-circle ' + data.scoreClass;
+                scoreValue.textContent = data.score;
+                scoreLabel.textContent = data.scoreLabel;
+            }
 
-    // 更新减脂建议
-    const adviceContent = document.getElementById('advice-content');
-    adviceContent.innerHTML = `
-        <p>根据分析结果，该食品的健康评分为 ${data.score} 分，属于 ${data.scoreLabel} 等级。</p>
-        <p>餐前决策：<strong>${decisionAdvice}</strong></p>
-        <p>减脂期间应注意控制摄入量，合理搭配其他营养食物。</p>
-    `;
-
-    // 更新低卡替代推荐
-    const alternativeList = document.getElementById('alternative-list');
-    
-    // 清空替代推荐
-    while (alternativeList.firstChild) {
-        alternativeList.removeChild(alternativeList.firstChild);
-    }
-
-    const alternatives = data.alternatives || generateLowCalorieAlternatives(calories, data.name || '该食品');
-    const alternativesFragment = document.createDocumentFragment();
-    
-    if (alternatives.length > 0) {
-        alternatives.forEach(alternative => {
-            const div = document.createElement('div');
-            div.className = 'alternative-item';
+            // 更新营养成分
+            const nutritionGrid = document.getElementById('nutrition-grid');
             
-            const nameH4 = document.createElement('h4');
-            nameH4.textContent = alternative.name || '未知食品';
-            
-            const caloriesDiv = document.createElement('div');
-            caloriesDiv.className = 'calories';
-            caloriesDiv.textContent = (alternative.calories || 0) + ' kcal';
-            
-            const descriptionDiv = document.createElement('div');
-            descriptionDiv.className = 'description';
-            descriptionDiv.textContent = alternative.description || '无描述';
-            
-            div.appendChild(nameH4);
-            div.appendChild(caloriesDiv);
-            div.appendChild(descriptionDiv);
-            alternativesFragment.appendChild(div);
-        });
-        
-        // 一次性添加所有替代推荐
-        alternativeList.appendChild(alternativesFragment);
-    } else {
-        const noAlternativesP = document.createElement('p');
-        noAlternativesP.className = 'no-alternatives';
-        noAlternativesP.textContent = '暂无低卡替代推荐';
-        alternativeList.appendChild(noAlternativesP);
-    }
+            if (nutritionGrid) {
+                // 清空营养成分网格
+                while (nutritionGrid.firstChild) {
+                    nutritionGrid.removeChild(nutritionGrid.firstChild);
+                }
 
-    // 更新热量预算
-    if (calories > 0) {
-        if (window.updateCalorieBudget) {
-            window.updateCalorieBudget(calories);
+                // 确保营养数据存在且格式正确
+                const nutrition = data.nutrition || {};
+                const nutritionItems = [
+                    { label: '热量', value: (nutrition.calories || 0) + ' kcal' },
+                    { label: '蛋白质', value: (nutrition.protein || 0) + ' g' },
+                    { label: '脂肪', value: (nutrition.fat || 0) + ' g' },
+                    { label: '碳水化合物', value: (nutrition.carbs || 0) + ' g' },
+                    { label: '纤维素', value: (nutrition.fiber || 0) + ' g' }
+                ];
+
+                // 创建营养成分项
+                nutritionItems.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'nutrition-item';
+                    
+                    const valueDiv = document.createElement('div');
+                    valueDiv.className = 'value';
+                    valueDiv.textContent = item.value;
+                    
+                    const labelDiv = document.createElement('div');
+                    labelDiv.className = 'label';
+                    labelDiv.textContent = item.label;
+                    
+                    div.appendChild(valueDiv);
+                    div.appendChild(labelDiv);
+                    nutritionGrid.appendChild(div);
+                });
+            }
+
+            // 更新配料表
+            const ingredientsList = document.getElementById('ingredients-list');
+            
+            if (ingredientsList) {
+                // 清空配料表
+                while (ingredientsList.firstChild) {
+                    ingredientsList.removeChild(ingredientsList.firstChild);
+                }
+
+                const ingredients = data.ingredients || [];
+                
+                // 创建配料项
+                ingredients.forEach(ingredient => {
+                    const div = document.createElement('div');
+                    div.className = 'ingredient-item';
+                    div.textContent = ingredient;
+                    ingredientsList.appendChild(div);
+                });
+            }
+
+            // 计算餐前决策建议
+            const nutrition = data.nutrition || {};
+            const calories = parseInt(nutrition.calories || 0);
+            const protein = parseFloat(nutrition.protein || 0);
+            const fat = parseFloat(nutrition.fat || 0);
+            const carbs = parseFloat(nutrition.carbs || 0);
+            const fiber = parseFloat(nutrition.fiber || 0);
+            
+            // 基于营养成分计算决策建议
+            let decisionAdvice = '';
+            if (data.score >= 8 && calories < 300 && fat < 10) {
+                decisionAdvice = '建议食用';
+            } else if (data.score >= 6 && calories < 400 && fat < 15) {
+                decisionAdvice = '适量食用';
+            } else {
+                decisionAdvice = '避免食用';
+            }
+
+            // 更新减脂建议
+            const adviceContent = document.getElementById('advice-content');
+            if (adviceContent) {
+                adviceContent.innerHTML = `
+                    <p>根据分析结果，该食品的健康评分为 ${data.score} 分，属于 ${data.scoreLabel} 等级。</p>
+                    <p>餐前决策：<strong>${decisionAdvice}</strong></p>
+                    <p>减脂期间应注意控制摄入量，合理搭配其他营养食物。</p>
+                `;
+            }
+
+            // 更新低卡替代推荐
+            const alternativeList = document.getElementById('alternative-list');
+            
+            if (alternativeList) {
+                // 清空替代推荐
+                while (alternativeList.firstChild) {
+                    alternativeList.removeChild(alternativeList.firstChild);
+                }
+
+                const alternatives = data.alternatives || generateLowCalorieAlternatives(calories, data.name || '该食品');
+                
+                if (alternatives.length > 0) {
+                    alternatives.forEach(alternative => {
+                        const div = document.createElement('div');
+                        div.className = 'alternative-item';
+                        
+                        const nameH4 = document.createElement('h4');
+                        nameH4.textContent = alternative.name || '未知食品';
+                        
+                        const caloriesDiv = document.createElement('div');
+                        caloriesDiv.className = 'calories';
+                        caloriesDiv.textContent = (alternative.calories || 0) + ' kcal';
+                        
+                        const descriptionDiv = document.createElement('div');
+                        descriptionDiv.className = 'description';
+                        descriptionDiv.textContent = alternative.description || '无描述';
+                        
+                        div.appendChild(nameH4);
+                        div.appendChild(caloriesDiv);
+                        div.appendChild(descriptionDiv);
+                        alternativeList.appendChild(div);
+                    });
+                } else {
+                    const noAlternativesP = document.createElement('p');
+                    noAlternativesP.className = 'no-alternatives';
+                    noAlternativesP.textContent = '暂无低卡替代推荐';
+                    alternativeList.appendChild(noAlternativesP);
+                }
+            }
+
+            // 更新热量预算
+            if (calories > 0) {
+                if (window.updateCalorieBudget) {
+                    window.updateCalorieBudget(calories);
+                }
+            }
+        } catch (error) {
+            console.error('更新分析结果失败:', error);
+            showError('显示结果失败，请重试');
         }
-    }
+    }, 300); // 300ms延迟，确保页面切换完成
 }
 
 // 生成低卡替代推荐
