@@ -18,6 +18,32 @@
 
 ## 快速开始
 
+项目提供测试模式，当API调用失败时会自动使用模拟数据，方便快速体验核心功能。
+
+## 部署方式
+
+### Vercel部署（推荐）
+
+项目已优化支持Vercel部署，可通过以下步骤部署：
+
+1. Fork本项目到您的GitHub账户
+2. 访问 [Vercel](https://vercel.com) 并登录
+3. 点击 "New Project" 导入您的GitHub仓库
+4. 配置环境变量：
+   - 在Vercel项目设置中，添加环境变量 `MODELSCOPE_API_KEY`
+   - 值为您的ModelScope API密钥
+5. 点击部署即可
+
+**在线演示**：[https://food-health-assessment.vercel.app](https://food-health-assessment.vercel.app)
+
+### 环境变量配置
+
+在Vercel部署时需要配置以下环境变量：
+
+| 变量名 | 说明 | 获取方式 |
+|--------|------|----------|
+| `MODELSCOPE_API_KEY` | ModelScope API密钥 | 访问 [ModelScope](https://modelscope.cn) 注册获取 |
+
 ### 本地开发
 
 1. 克隆项目到本地
@@ -25,15 +51,7 @@
 3. 启动本地服务器：`npm start`
 4. 浏览器访问：`http://localhost:3000`
 
-### 测试模式
-
-项目提供测试模式，当API调用失败时会自动使用模拟数据，方便快速体验核心功能。
-
-## 部署方式
-
-项目已部署到Vercel静态网站托管服务，可通过以下链接访问：
-
-[https://food-health-assessment.vercel.app](https://food-health-assessment.vercel.app)
+**注意**：本地开发时，API调用会直接使用ModelScope API，无需配置环境变量。
 
 ## 使用说明
 
@@ -64,6 +82,8 @@
 ## 项目结构
 
 ```
+├── api/
+│   └── analyze.js         # Vercel Serverless API代理
 ├── css/
 │   └── style.css          # 样式文件
 ├── js/
@@ -74,5 +94,7 @@
 │   └── main.js            # 主功能
 ├── index.html             # 主页面
 ├── package.json           # 项目配置
+├── vercel.json            # Vercel配置文件
+├── .env.example           # 环境变量示例
 └── README.md              # 项目说明
 ```

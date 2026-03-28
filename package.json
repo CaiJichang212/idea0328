@@ -1,7 +1,7 @@
 {
   "name": "food-health-assessment",
-  "version": "1.0.0",
-  "description": "包装食物健康评估和减脂建议工具",
+  "version": "2.0.0",
+  "description": "包装食物健康评估和减脂建议工具 - 支持Vercel部署",
   "main": "index.html",
   "scripts": {
     "start": "npx http-server -p 3000 -o",
@@ -13,11 +13,15 @@
     "health",
     "nutrition",
     "diet",
-    "fitness"
+    "fitness",
+    "vercel"
   ],
   "author": "",
   "license": "MIT",
   "devDependencies": {
     "http-server": "^14.1.1"
+  },
+  "engines": {
+    "node": ">=18.x"
   }
 }
