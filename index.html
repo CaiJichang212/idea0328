@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>包装食物健康评估</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="src/css/style.css">
 </head>
 <body>
     <!-- 导航栏 -->
@@ -18,7 +18,7 @@
     </nav>
 
     <!-- 首页 -->
-    <section id="home" class="page active">
+    <section id="home" class="page active" style="display: block;">
         <div class="container">
             <h1>包装食物健康评估</h1>
             <p>拍照识别包装食物，获取健康评分和减脂建议</p>
@@ -161,10 +161,6 @@
         <p>正在分析，请稍候...</p>
     </div>
 
-    <script src="js/api.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/camera.js"></script>
-    <script src="js/analysis.js"></script>
-    <script src="js/history.js"></script>
+    <script type="module" src="src/js/main.js"></script>
 </body>
 </html>

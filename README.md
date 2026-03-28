@@ -84,14 +84,18 @@
 ```
 ├── api/
 │   └── analyze.js         # Vercel Serverless API代理
-├── css/
-│   └── style.css          # 样式文件
-├── js/
-│   ├── analysis.js        # 分析功能
-│   ├── api.js             # API调用功能
-│   ├── camera.js          # 摄像头功能
-│   ├── history.js         # 历史记录功能
-│   └── main.js            # 主功能
+├── src/
+│   ├── js/
+│   │   ├── api.js         # API调用功能
+│   │   ├── analysis.js    # 分析功能
+│   │   ├── camera.js      # 摄像头功能
+│   │   ├── history.js     # 历史记录功能
+│   │   ├── main.js        # 主功能
+│   │   └── utils.js       # 工具函数
+│   └── css/
+│       └── style.css      # 样式文件
+├── public/
+│   └── images/            # 图片资源
 ├── index.html             # 主页面
 ├── package.json           # 项目配置
 ├── vercel.json            # Vercel配置文件
