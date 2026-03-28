@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>包装食物健康评估</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav>
+        <div class="logo">食物健康评估</div>
+        <ul class="nav-links">
+            <li><a href="#home" class="nav-link active">首页</a></li>
+            <li><a href="#result" class="nav-link">识别结果</a></li>
+            <li><a href="#history" class="nav-link">历史记录</a></li>
+        </ul>
+    </nav>
+
+    <!-- 首页 -->
+    <section id="home" class="page active">
+        <div class="container">
+            <h1>包装食物健康评估</h1>
+            <p>拍照识别包装食物，获取健康评分和减脂建议</p>
+            
+            <!-- 健康目标选择 -->
+            <div class="goal-selector">
+                <h3>选择健康目标</h3>
+                <div class="goal-options">
+                    <button class="goal-btn active" data-goal="减脂">减脂</button>
+                    <button class="goal-btn" data-goal="增肌">增肌</button>
+                    <button class="goal-btn" data-goal="维持">维持</button>
+                </div>
+            </div>
+
+            <!-- 热量预算管理 -->
+            <div class="calorie-budget">
+                <h3>热量预算管理</h3>
+                <div class="budget-info">
+                    <div class="budget-item">
+                        <label for="daily-budget">每日热量预算 (kcal):</label>
+                        <input type="number" id="daily-budget" min="1200" max="3000" value="2000">
+                    </div>
+                    <div class="budget-item">
+                        <label>今日已消耗 (kcal):</label>
+                        <span id="calories-consumed">0</span>
+                    </div>
+                    <div class="budget-item">
+                        <label>剩余预算 (kcal):</label>
+                        <span id="calories-remaining">2000</span>
+                    </div>
+                </div>
+                <button id="reset-budget" class="budget-btn">重置今日预算</button>
+            </div>
+
+            <!-- 拍照识别区域 -->
+            <div class="capture-section">
+                <h3>识别方式</h3>
+                <div class="capture-options">
+                    <button id="camera-btn" class="capture-btn">
+                        <span class="btn-icon">📷</span>
+                        <span>拍照识别</span>
+                    </button>
+                    <button id="upload-btn" class="capture-btn">
+                        <span class="btn-icon">📁</span>
+                        <span>上传图片</span>
+                    </button>
+                    <button id="barcode-btn" class="capture-btn">
+                        <span class="btn-icon">📱</span>
+                        <span>扫描条码</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 摄像头预览区域 -->
+            <div id="camera-preview" class="camera-preview hidden">
+                <video id="video" autoplay></video>
+                <button id="capture-photo">拍摄</button>
+                <button id="cancel-camera">取消</button>
+            </div>
+
+            <!-- 上传图片区域 -->
+            <div id="upload-preview" class="upload-preview hidden">
+                <input type="file" id="image-upload" accept="image/*">
+                <div id="image-preview" class="image-preview"></div>
+                <button id="process-upload">处理图片</button>
+                <button id="cancel-upload">取消</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 识别结果页 -->
+    <section id="result" class="page hidden">
+        <div class="container">
+            <h1>识别结果</h1>
+            
+            <!-- 健康评分 -->
+            <div class="health-score">
+                <div class="score-circle" id="score-circle">
+                    <span id="score-value">0</span>
+                    <span>健康评分</span>
+                </div>
+                <div class="score-label" id="score-label">加载中...</div>
+            </div>
+
+            <!-- 营养分析 -->
+            <div class="nutrition-analysis">
+                <h3>营养成分分析</h3>
+                <div class="nutrition-grid" id="nutrition-grid">
+                    <!-- 营养成分将通过JS动态添加 -->
+                </div>
+            </div>
+
+            <!-- 配料表分析 -->
+            <div class="ingredients-analysis">
+                <h3>配料表分析</h3>
+                <div class="ingredients-list" id="ingredients-list">
+                    <!-- 配料表将通过JS动态添加 -->
+                </div>
+            </div>
+
+            <!-- 减脂建议 -->
+            <div class="dietary-advice">
+                <h3>减脂建议</h3>
+                <div class="advice-content" id="advice-content">
+                    <!-- 建议将通过JS动态添加 -->
+                </div>
+            </div>
+
+            <!-- 低卡替代推荐 -->
+            <div class="alternatives">
+                <h3>低卡替代推荐</h3>
+                <div class="alternative-list" id="alternative-list">
+                    <!-- 替代产品将通过JS动态添加 -->
+                </div>
+            </div>
+
+            <button id="back-to-home" class="back-btn">返回首页</button>
+        </div>
+    </section>
+
+    <!-- 历史记录页 -->
+    <section id="history" class="page hidden">
+        <div class="container">
+            <h1>历史记录</h1>
+            <div class="history-header">
+                <p>所有数据仅存储在本地浏览器，保护您的隐私</p>
+                <button id="clear-history" class="clear-btn">清除历史记录</button>
+            </div>
+            <div class="history-list" id="history-list">
+                <!-- 历史记录将通过JS动态添加 -->
+                <div class="history-empty">暂无历史记录</div>
+            </div>
+            <button id="back-to-home-from-history" class="back-btn">返回首页</button>
+        </div>
+    </section>
+
+    <!-- 加载动画 -->
+    <div id="loading" class="loading hidden">
+        <div class="loading-spinner"></div>
+        <p>正在分析，请稍候...</p>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/camera.js"></script>
+    <script src="js/analysis.js"></script>
+    <script src="js/history.js"></script>
+</body>
+</html>

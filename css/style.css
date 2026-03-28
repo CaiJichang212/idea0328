@@ -1,0 +1,809 @@
+/* 全局样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* 导航栏 */
+nav {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+nav .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+}
+
+.nav-links li {
+    margin-left: 20px;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.nav-link:hover {
+    background-color: rgba(255,255,255,0.1);
+}
+
+.nav-link.active {
+    background-color: rgba(255,255,255,0.2);
+    font-weight: bold;
+}
+
+/* 页面样式 */
+.page {
+    display: none;
+    min-height: 80vh;
+    padding: 20px 0;
+}
+
+.page.active {
+    display: block;
+}
+
+/* 首页样式 */
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+#home p {
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 40px;
+    color: #666;
+}
+
+/* 健康目标选择 */
+.goal-selector {
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.goal-selector h3 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.goal-options {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* 热量预算管理 */
+.calorie-budget {
+    margin-bottom: 40px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.calorie-budget h3 {
+    margin-bottom: 15px;
+    color: #333;
+    border-bottom: 2px solid #4CAF50;
+    padding-bottom: 10px;
+}
+
+.budget-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.budget-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.budget-item label {
+    font-weight: bold;
+    color: #333;
+}
+
+.budget-item input {
+    padding: 8px;
+    border: 2px solid #4CAF50;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.budget-item span {
+    font-size: 18px;
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+.budget-btn {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.budget-btn:hover {
+    background-color: #45a049;
+}
+
+.goal-btn {
+    padding: 10px 20px;
+    border: 2px solid #4CAF50;
+    background-color: white;
+    color: #4CAF50;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 16px;
+}
+
+.goal-btn:hover {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.goal-btn.active {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+}
+
+/* 拍照识别区域 */
+.capture-section {
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.capture-section h3 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.capture-options {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.capture-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    height: 150px;
+    border: 2px dashed #4CAF50;
+    background-color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    padding: 20px;
+}
+
+.capture-btn:hover {
+    border-color: #45a049;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.btn-icon {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+/* 摄像头预览 */
+.camera-preview {
+    margin: 20px auto;
+    max-width: 600px;
+    text-align: center;
+}
+
+#video {
+    width: 100%;
+    max-width: 500px;
+    border: 2px solid #4CAF50;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.camera-preview button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#capture-photo {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#cancel-camera {
+    background-color: #f44336;
+    color: white;
+}
+
+/* 上传图片区域 */
+.upload-preview {
+    margin: 20px auto;
+    max-width: 600px;
+    text-align: center;
+}
+
+#image-upload {
+    margin-bottom: 20px;
+}
+
+.upload-preview button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.image-preview {
+    margin: 20px auto;
+    max-width: 400px;
+    max-height: 300px;
+    border: 2px dashed #4CAF50;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.image-preview img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+#process-upload {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#cancel-upload {
+    background-color: #f44336;
+    color: white;
+}
+
+/* 识别结果页 */
+.health-score {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.score-circle {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background-color: #4CAF50;
+    color: white;
+    margin-bottom: 20px;
+    transition: all 0.5s;
+}
+
+#score-value {
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.score-label {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* 营养分析 */
+.nutrition-analysis {
+    margin-bottom: 40px;
+}
+
+.nutrition-analysis h3 {
+    margin-bottom: 15px;
+    color: #333;
+    border-bottom: 2px solid #4CAF50;
+    padding-bottom: 10px;
+}
+
+.nutrition-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.nutrition-item {
+    background-color: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.nutrition-item .value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+.nutrition-item .label {
+    font-size: 14px;
+    color: #666;
+    margin-top: 5px;
+}
+
+/* 配料表分析 */
+.ingredients-analysis {
+    margin-bottom: 40px;
+}
+
+.ingredients-analysis h3 {
+    margin-bottom: 15px;
+    color: #333;
+    border-bottom: 2px solid #4CAF50;
+    padding-bottom: 10px;
+}
+
+.ingredients-list {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.ingredient-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.ingredient-item:last-child {
+    border-bottom: none;
+}
+
+/* 减脂建议 */
+.dietary-advice {
+    margin-bottom: 40px;
+}
+
+.dietary-advice h3 {
+    margin-bottom: 15px;
+    color: #333;
+    border-bottom: 2px solid #4CAF50;
+    padding-bottom: 10px;
+}
+
+.advice-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    line-height: 1.6;
+}
+
+/* 低卡替代推荐 */
+.alternatives {
+    margin-bottom: 40px;
+}
+
+.alternatives h3 {
+    margin-bottom: 15px;
+    color: #333;
+    border-bottom: 2px solid #4CAF50;
+    padding-bottom: 10px;
+}
+
+.alternative-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.alternative-item {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.alternative-item h4 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.alternative-item .calories {
+    font-weight: bold;
+    color: #f44336;
+    margin-bottom: 10px;
+}
+
+.alternative-item .description {
+    font-size: 14px;
+    color: #666;
+}
+
+.no-alternatives {
+    text-align: center;
+    color: #666;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* 历史记录页 */
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.history-header p {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+}
+
+.clear-btn {
+    padding: 8px 16px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.clear-btn:hover {
+    background-color: #d32f2f;
+}
+
+.history-list {
+    margin-bottom: 40px;
+}
+
+.history-item {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.history-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.history-item h4 {
+    margin-bottom: 10px;
+    color: #333;
+    font-size: 18px;
+}
+
+.history-item .score {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.history-item .nutrition {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.history-item .advice {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.history-item .date {
+    font-size: 14px;
+    color: #999;
+    margin-top: 10px;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+.history-empty {
+    text-align: center;
+    color: #666;
+    padding: 40px 0;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* 按钮样式 */
+.back-btn {
+    display: block;
+    margin: 0 auto;
+    padding: 12px 30px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.back-btn:hover {
+    background-color: #45a049;
+}
+
+/* 加载动画 */
+.loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255,255,255,0.95);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(2px);
+}
+
+.loading-spinner {
+    width: 60px;
+    height: 60px;
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid #4CAF50;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+    box-shadow: 0 0 20px rgba(76, 175, 80, 0.3);
+}
+
+.loading p {
+    font-size: 18px;
+    color: #333;
+    font-weight: 500;
+    margin: 0;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+/* 提示消息样式 */
+.error-message,
+.success-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    z-index: 1000;
+    animation: slideIn 0.3s ease-out;
+    font-weight: 500;
+    min-width: 250px;
+    max-width: 400px;
+}
+
+.error-message {
+    background-color: #f44336;
+    color: white;
+    border-left: 4px solid #d32f2f;
+}
+
+.success-message {
+    background-color: #4CAF50;
+    color: white;
+    border-left: 4px solid #388E3C;
+}
+
+/* 隐藏类 */
+.hidden {
+    display: none !important;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    .nav-links li {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+
+    .capture-options {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .capture-btn {
+        width: 200px;
+    }
+
+    .nutrition-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .alternative-list {
+        grid-template-columns: 1fr;
+    }
+
+    .budget-info {
+        grid-template-columns: 1fr;
+    }
+
+    .health-score {
+        margin-bottom: 30px;
+    }
+
+    .score-circle {
+        width: 150px;
+        height: 150px;
+    }
+
+    #score-value {
+        font-size: 36px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    h3 {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 5px;
+    }
+
+    .logo {
+        font-size: 20px;
+    }
+
+    .capture-btn {
+        width: 180px;
+        height: 180px;
+    }
+
+    .score-circle {
+        width: 120px;
+        height: 120px;
+    }
+
+    #score-value {
+        font-size: 28px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    h3 {
+        font-size: 16px;
+    }
+
+    .nutrition-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .history-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .clear-btn {
+        align-self: flex-end;
+    }
+}
+
+/* 颜色编码样式 */
+.score-excellent {
+    background-color: #4CAF50 !important;
+}
+
+.score-good {
+    background-color: #8BC34A !important;
+}
+
+.score-average {
+    background-color: #FFC107 !important;
+}
+
+.score-poor {
+    background-color: #F44336 !important;
+}

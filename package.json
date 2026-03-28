@@ -1,0 +1,23 @@
+{
+  "name": "food-health-assessment",
+  "version": "1.0.0",
+  "description": "包装食物健康评估和减脂建议工具",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server -p 3000 -o",
+    "dev": "npx http-server -p 3000 -o",
+    "build": "echo 'Build completed'"
+  },
+  "keywords": [
+    "food",
+    "health",
+    "nutrition",
+    "diet",
+    "fitness"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}
