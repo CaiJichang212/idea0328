@@ -6,7 +6,8 @@
   "scripts": {
     "start": "npx http-server -p 3000 -o",
     "dev": "npx http-server -p 3000 -o",
-    "build": "echo 'Build completed'"
+    "build": "echo 'Build completed'",
+    "test": "node test_puppeteer.js"
   },
   "keywords": [
     "food",
@@ -19,7 +20,8 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "http-server": "^14.1.1"
+    "http-server": "^14.1.1",
+    "puppeteer": "^24.40.0"
   },
   "engines": {
     "node": ">=18.x"
