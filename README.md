@@ -63,14 +63,45 @@ window.ENV_CONFIG = {
 
 ### 本地开发
 
-1. 克隆项目到本地
-2. 复制 `env-config.js.example` 为 `env-config.js`
-3. 编辑 `env-config.js`，填入您的 ModelScope API密钥
-4. 安装依赖：`npm install`
-5. 启动本地服务器：`npm start`
-6. 浏览器访问：`http://localhost:3000`
+#### 前置要求
 
-**注意**：本地开发时，需要在 `env-config.js` 中配置 API 密钥，否则无法调用 ModelScope API。
+- **Node.js**: v18.x 或更高版本
+- **npm**: v8.x 或更高版本
+- **ModelScope API Key**: 从 [ModelScope](https://modelscope.cn) 注册获取
+
+#### 详细步骤
+
+```bash
+# 1. 克隆项目
+git clone <your-repo-url>
+cd idea0328
+
+# 2. 配置环境变量
+cp env-config.js.example env-config.js
+# 编辑 env-config.js，填入您的 ModelScope API 密钥
+
+# 3. 安装依赖
+npm install
+
+# 4. 启动开发服务器
+npm start
+# 浏览器会自动打开 http://localhost:3000
+```
+
+#### 运行测试
+
+```bash
+# 运行 Puppeteer E2E 测试
+npm test
+```
+
+#### 开发服务器说明
+
+- 默认端口：`3000`
+- 自动打开浏览器预览
+- 修改代码后刷新页面即可看到更新
+
+**注意**：本地开发时，必须在 `env-config.js` 中配置 API 密钥，否则无法调用 ModelScope API。
 
 ## 使用说明
 
@@ -116,8 +147,9 @@ window.ENV_CONFIG = {
 ├── public/
 │   └── images/            # 图片资源
 ├── index.html             # 主页面
+├── test_puppeteer.js      # Puppeteer E2E测试
 ├── env-config.js          # 本地环境配置文件（不提交到git）
-├── env-config.js.example   # 环境配置示例文件
+├── env-config.js.example  # 环境配置示例文件
 ├── package.json           # 项目配置
 ├── vercel.json            # Vercel配置文件
 ├── .env.example           # 环境变量示例
