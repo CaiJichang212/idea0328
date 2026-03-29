@@ -10,27 +10,39 @@ function isVercelEnvironment() {
            !window.location.hostname.includes('local');
 }
 
+function getEnvConfig() {
+    const envConfig = window.ENV_CONFIG || {};
+    const vercelEnvVars = {
+        MODELSCOPE_API_KEY: typeof MODELSCOPE_API_KEY !== 'undefined' ? MODELSCOPE_API_KEY : null,
+        API_BASE_URL: typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : null,
+    };
+    return {
+        MODELSCOPE_API_KEY: envConfig.MODELSCOPE_API_KEY || vercelEnvVars.MODELSCOPE_API_KEY || null,
+        API_BASE_URL: envConfig.API_BASE_URL || vercelEnvVars.API_BASE_URL || 'https://api-inference.modelscope.cn/v1/',
+    };
+}
+
 export async function callQwenAPI(imageData) {
     const MAX_RETRIES = 2;
     let retries = 0;
-    
+
     while (retries <= MAX_RETRIES) {
         try {
             const optimizedImage = await optimizeImage(imageData);
-            
+
             const cacheKey = generateImageHash(optimizedImage);
-            
+
             const cached = imageCache.get(cacheKey);
             if (cached && (Date.now() - cached.timestamp) < CACHE_EXPIRY) {
                 console.log('使用缓存结果');
                 return cached.data;
             }
-            
+
             console.log('开始API调用...');
             console.log('运行环境:', isVercelEnvironment() ? 'Vercel' : '本地');
-            
+
             let response;
-            
+
             if (isVercelEnvironment()) {
                 response = await fetch('/api/analyze', {
                     method: 'POST',
@@ -42,14 +54,14 @@ export async function callQwenAPI(imageData) {
                     })
                 });
             } else {
-                const envConfig = window.ENV_CONFIG || {};
+                const envConfig = getEnvConfig();
                 const apiKey = envConfig.MODELSCOPE_API_KEY;
 
                 if (!apiKey || apiKey === 'your_modelscope_api_key_here') {
                     throw new Error('请先配置环境变量：在 env-config.js 中设置您的 MODELSCOPE_API_KEY');
                 }
 
-                const apiBaseUrl = envConfig.API_BASE_URL || 'https://api-inference.modelscope.cn/v1/';
+                const apiBaseUrl = envConfig.API_BASE_URL;
 
                 response = await fetch(apiBaseUrl, {
                     method: 'POST',
