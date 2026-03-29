@@ -38,20 +38,39 @@
 
 ### 环境变量配置
 
-在Vercel部署时需要配置以下环境变量：
+#### Vercel部署环境变量
+
+在Vercel部署时需要在项目设置中配置以下环境变量：
 
 | 变量名 | 说明 | 获取方式 |
 |--------|------|----------|
 | `MODELSCOPE_API_KEY` | ModelScope API密钥 | 访问 [ModelScope](https://modelscope.cn) 注册获取 |
 
+#### 本地开发环境变量
+
+1. 复制 `env-config.js.example` 为 `env-config.js`
+2. 编辑 `env-config.js`，填入您的 ModelScope API密钥：
+```javascript
+window.ENV_CONFIG = {
+    MODELSCOPE_API_KEY: '您的API密钥',
+    API_BASE_URL: 'https://api-inference.modelscope.cn/v1/chat/completions',
+    MODEL_NAME: 'Qwen/Qwen3.5-122B-A10B',
+    CACHE_EXPIRY_MS: 86400000
+};
+```
+
+**重要**：`env-config.js` 文件包含敏感信息，已被 `.gitignore` 排除，不会被提交到版本控制系统。
+
 ### 本地开发
 
 1. 克隆项目到本地
-2. 安装依赖：`npm install`
-3. 启动本地服务器：`npm start`
-4. 浏览器访问：`http://localhost:3000`
+2. 复制 `env-config.js.example` 为 `env-config.js`
+3. 编辑 `env-config.js`，填入您的 ModelScope API密钥
+4. 安装依赖：`npm install`
+5. 启动本地服务器：`npm start`
+6. 浏览器访问：`http://localhost:3000`
 
-**注意**：本地开发时，API调用会直接使用ModelScope API，无需配置环境变量。
+**注意**：本地开发时，需要在 `env-config.js` 中配置 API 密钥，否则无法调用 ModelScope API。
 
 ## 使用说明
 
@@ -97,8 +116,11 @@
 ├── public/
 │   └── images/            # 图片资源
 ├── index.html             # 主页面
+├── env-config.js          # 本地环境配置文件（不提交到git）
+├── env-config.js.example   # 环境配置示例文件
 ├── package.json           # 项目配置
 ├── vercel.json            # Vercel配置文件
 ├── .env.example           # 环境变量示例
+├── .gitignore             # Git忽略配置
 └── README.md              # 项目说明
 ```

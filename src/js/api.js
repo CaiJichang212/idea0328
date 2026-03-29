@@ -42,9 +42,16 @@ export async function callQwenAPI(imageData) {
                     })
                 });
             } else {
-                const apiKey = window.MODELSCOPE_API_KEY || 'ms-c81078dc-06a3-4e13-9283-6b018b363da9';
-                
-                response = await fetch('https://api-inference.modelscope.cn/v1/chat/completions', {
+                const envConfig = window.ENV_CONFIG || {};
+                const apiKey = envConfig.MODELSCOPE_API_KEY;
+
+                if (!apiKey || apiKey === 'your_modelscope_api_key_here') {
+                    throw new Error('请先配置环境变量：在 env-config.js 中设置您的 MODELSCOPE_API_KEY');
+                }
+
+                const apiBaseUrl = envConfig.API_BASE_URL || 'https://api-inference.modelscope.cn/v1/chat/completions';
+
+                response = await fetch(apiBaseUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
