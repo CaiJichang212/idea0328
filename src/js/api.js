@@ -49,7 +49,7 @@ export async function callQwenAPI(imageData) {
                     throw new Error('请先配置环境变量：在 env-config.js 中设置您的 MODELSCOPE_API_KEY');
                 }
 
-                const apiBaseUrl = envConfig.API_BASE_URL || 'https://api-inference.modelscope.cn/v1/chat/completions';
+                const apiBaseUrl = envConfig.API_BASE_URL || 'https://api-inference.modelscope.cn/v1/';
 
                 response = await fetch(apiBaseUrl, {
                     method: 'POST',
