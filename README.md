@@ -146,8 +146,11 @@ npm test
 │       └── style.css      # 样式文件
 ├── public/
 │   └── images/            # 图片资源
+├── tests/
+│   ├── test_puppeteer.js # Puppeteer E2E测试
+│   ├── test_api.py       # API测试脚本
+│   └── test_server.py    # 本地测试服务器
 ├── index.html             # 主页面
-├── test_puppeteer.js      # Puppeteer E2E测试
 ├── env-config.js          # 本地环境配置文件（不提交到git）
 ├── env-config.js.example  # 环境配置示例文件
 ├── package.json           # 项目配置

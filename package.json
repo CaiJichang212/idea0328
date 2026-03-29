@@ -7,7 +7,7 @@
     "start": "npx http-server -p 3000 -o",
     "dev": "npx http-server -p 3000 -o",
     "build": "echo 'Build completed'",
-    "test": "node test_puppeteer.js"
+    "test": "node tests/test_puppeteer.js"
   },
   "keywords": [
     "food",

@@ -6,12 +6,13 @@ const fs = require('fs');
 const PORT = 3001;
 const BASE_URL = `http://localhost:${PORT}`;
 
-const TEST_IMAGE_PATH = path.join(__dirname, 'public', 'images', '测试1-辣条.jpg');
+const PROJECT_ROOT = path.resolve(__dirname, '..');
+const TEST_IMAGE_PATH = path.join(PROJECT_ROOT, 'public', 'images', '测试1-辣条.jpg');
 
 async function startTestServer() {
     return new Promise((resolve, reject) => {
         const server = http.createServer((req, res) => {
-            let filePath = path.join(__dirname, req.url === '/' ? 'index.html' : req.url);
+            let filePath = path.join(PROJECT_ROOT, req.url === '/' ? 'index.html' : req.url);
             const extname = path.extname(filePath);
             const contentTypes = {
                 '.html': 'text/html',
