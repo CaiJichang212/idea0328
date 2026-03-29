@@ -18,7 +18,7 @@ function getEnvConfig() {
     };
     return {
         MODELSCOPE_API_KEY: envConfig.MODELSCOPE_API_KEY || vercelEnvVars.MODELSCOPE_API_KEY || null,
-        API_BASE_URL: envConfig.API_BASE_URL || vercelEnvVars.API_BASE_URL || 'https://api-inference.modelscope.cn/v1/',
+        API_BASE_URL: envConfig.API_BASE_URL || vercelEnvVars.API_BASE_URL || 'https://api-inference.modelscope.cn/v1/chat/completions',
     };
 }
 
